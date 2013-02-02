@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace FlashVideoFiles.F4VBoxes
 {
     /// <summary>
-    /// The Movie (moov) box is effectively the “header” of an F4V file. The moov box itself contains one or more other boxes, which in turn contain other boxes, which define the structure of the F4V data
+    /// The Movie (moov) box is effectively the “header” of an F4V file.
+    /// The moov box itself contains one or more other boxes, which in turn contain other boxes, which define the structure of the F4V data
     /// </summary>
     class MovieBox : F4VBox
     {

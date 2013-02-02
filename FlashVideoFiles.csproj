@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="F4VBoxes\EditBox.cs" />
+    <Compile Include="F4VBoxes\EditListBox.cs" />
     <Compile Include="F4VBoxes\F4VBox.cs" />
     <Compile Include="F4VBoxes\F4VBoxHeader.cs" />
     <Compile Include="F4VBoxes\FileTypeBox.cs" />

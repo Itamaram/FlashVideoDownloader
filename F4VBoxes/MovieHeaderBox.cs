@@ -21,11 +21,13 @@ namespace FlashVideoFiles.F4VBoxes
         /// </summary>
         public UInt24 Flags { get; set; }
         /// <summary>
-        /// The creation time of the F4V file, expressed as seconds elapsed since midnight, January 1, 1904 (UTC). Is a Uint32 if Version == 0
+        /// The creation time of the F4V file, expressed as seconds elapsed since midnight, January 1, 1904 (UTC).
+        /// Is a Uint32 if Version == 0
         /// </summary>
         public UInt64 CreationTime { get; set; }
         /// <summary>
-        /// The last modification time of the F4V file, expressed as seconds elapsed since midnight, January 1, 1904 (UTC). Is a Uint32 if Version == 0
+        /// The last modification time of the F4V file, expressed as seconds elapsed since midnight, January 1, 1904 (UTC).
+        /// Is a Uint32 if Version == 0
         /// </summary>
         public UInt64 ModificationTime { get; set; }
         /// <summary>
@@ -33,7 +35,8 @@ namespace FlashVideoFiles.F4VBoxes
         /// </summary>
         public uint TimeScale { get; set; }
         /// <summary>
-        /// The total length of the F4V file presentation, in TimeScale units. This is also the duration of the longest track in the file. Is a Uint32 if Version == 0
+        /// The total length of the F4V file presentation, in TimeScale units. This is also the duration of the longest track in the file.
+        /// Is a Uint32 if Version == 0
         /// </summary>
         public UInt64 Duration { get; set; }
         /// <summary>
@@ -53,7 +56,11 @@ namespace FlashVideoFiles.F4VBoxes
         /// </summary>
         public uint[] Reserved_2 { get; set; }
         /// <summary>
-        /// Transformation matrix for the F4V file, shall be {0x00010000, 0, 0, 0, 0x00010000, 0, 0, 0, 0x40000000}. Array Length is always 9.
+        /// Transformation matrix for the F4V file, shall be
+        /// {0x00010000, 0, 0,
+        /// 0, 0x00010000, 0,
+        /// 0, 0, 0x40000000}.
+        /// Array Length is always 9.
         /// </summary>
         public int[] Matrix { get; set; }
         /// <summary>
@@ -61,7 +68,8 @@ namespace FlashVideoFiles.F4VBoxes
         /// </summary>
         public uint[] Reserved_3 { get; set; }
         /// <summary>
-        /// The ID of the next track to be added to the presentation. This value shall not be 0 but may be all 1’s to indicate an undefined state
+        /// The ID of the next track to be added to the presentation.
+        /// This value shall not be 0 but may be all 1’s to indicate an undefined state
         /// </summary>
         public uint NextTrackID { get; set; }
     }

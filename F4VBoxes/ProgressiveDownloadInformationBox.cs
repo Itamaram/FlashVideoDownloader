@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace FlashVideoFiles.F4VBoxes
 {
     /// <summary>
-    /// The Progressive Download Information (pdin) box defines information about progressive download. The payload of a pdin box provides hints about how much data to download before a player can safely begin playback.
+    /// The Progressive Download Information (pdin) box defines information about progressive download.
+    /// The payload of a pdin box provides hints about how much data to download before a player can safely begin playback.
     /// </summary>
     class ProgressiveDownloadInformationBox : F4VBox
     {

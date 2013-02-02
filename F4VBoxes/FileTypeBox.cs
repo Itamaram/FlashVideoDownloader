@@ -20,7 +20,8 @@ namespace FlashVideoFiles.F4VBoxes
         /// </summary>
         public UInt32 MajorBrand { get; set; }
         /// <summary>
-        /// MinorVersion is informative only. It shall not be used to determine the conformance of a file to a standard. It may allow for more precise identification of the major brand for inspection, debugging, or improved decoding.
+        /// MinorVersion is informative only. It shall not be used to determine the conformance of a file to a standard.
+        /// It may allow for more precise identification of the major brand for inspection, debugging, or improved decoding.
         /// </summary>
         public UInt32 MinorVersion { get; set; }
         /// <summary>
