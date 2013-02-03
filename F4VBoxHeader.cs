@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
-namespace FlashVideoFiles.F4VBoxes
+namespace FlashVideoFiles
 {
+    /// <summary>
+    /// A consistent header that all boxes have
+    /// </summary>
     class F4VBoxHeader
     {
         /// <summary>
@@ -13,12 +17,26 @@ namespace FlashVideoFiles.F4VBoxes
         /// </summary>
         public uint TotalSize { get; private set; }
         /// <summary>
-        /// The type of the box, usually as Four-character ASCII code
+        /// The type of the box, usually as 4CC code
         /// </summary>
         public uint BoxType { get; private set; }
         /// <summary>
         /// The total 64-bit length of the box in bytes, including this header, only used if TotalSize == 1
         /// </summary>
-        public uint? ExtendedSize { get; private set; }
+        public UInt64? ExtendedSize { get; private set; }
+
+        public void Parse(Stream s)
+        {
+            using (var br = new BinaryReader(s))
+            {
+                TotalSize = br.ReadUInt32();
+                BoxType = br.ReadUInt32();
+                if (TotalSize == 1)
+                    ExtendedSize = br.ReadUInt64();
+                else
+                    ExtendedSize = null;
+            }
+
+        }
     }
 }

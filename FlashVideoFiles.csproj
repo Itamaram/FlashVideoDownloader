@@ -39,22 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="F4VBoxes\EditBox.cs" />
-    <Compile Include="F4VBoxes\EditListBox.cs" />
-    <Compile Include="F4VBoxes\F4VBox.cs" />
-    <Compile Include="F4VBoxes\F4VBoxHeader.cs" />
-    <Compile Include="F4VBoxes\FileTypeBox.cs" />
-    <Compile Include="F4VBoxes\MovieBox.cs" />
-    <Compile Include="F4VBoxes\MovieHeaderBox.cs" />
-    <Compile Include="F4VBoxes\ProgressiveDownloadInformationBox.cs" />
-    <Compile Include="F4VBoxes\TrackBox.cs" />
-    <Compile Include="F4VBoxes\TrackHeaderBox.cs" />
+    <Compile Include="F4VBoxHeader.cs" />
+    <Compile Include="F4VBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Structs\Int16_16.cs" />
-    <Compile Include="Structs\Int24.cs" />
-    <Compile Include="Structs\Int8_8.cs" />
-    <Compile Include="Structs\UInt16_16.cs" />
-    <Compile Include="Structs\UInt24.cs" />
+    <Compile Include="FourCC.cs" />
+    <Compile Include="SegmentRunTableBox.cs" />
+    <Compile Include="UInt24.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

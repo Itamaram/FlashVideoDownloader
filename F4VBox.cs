@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
-namespace FlashVideoFiles.F4VBoxes
+namespace FlashVideoFiles
 {
     abstract class F4VBox
     {
@@ -12,10 +13,15 @@ namespace FlashVideoFiles.F4VBoxes
         /// A consistent header that all boxes have
         /// </summary>
         public F4VBoxHeader BoxHeader { get; private set; }
-        /// <summary>
-        /// A number of bytes, the length of which is defined by the BOXHEADER
-        /// </summary>
-        public byte[] PayLoad { get; private set; }
-        public abstract uint BoxType { get; }
+
+        public F4VBox()
+        {
+            BoxHeader = new F4VBoxHeader();
+        }
+
+        public virtual void Parse(Stream s)
+        {
+            BoxHeader.Parse(s);
+        }
     }
 }
