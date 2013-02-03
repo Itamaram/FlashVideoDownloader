@@ -11,5 +11,7 @@ However, this would require me to write a GUI. So let me finish writing them dll
 '''tl;dr:'''This project is not yet ready for human consumption.
 === References ===
 F4v specifications - http://download.macromedia.com/f4v/video_file_format_spec_v10_1.pdf (Did you know I tried implementing all of it before realizing it is not needed for this project? Some weekends were meant to be wasted)
+
 F4M specifications - http://sourceforge.net/apps/mediawiki/osmf.adobe/index.php?title=Flash_Media_Manifest_%28F4M%29_File_Format (Schemas are for chumps)
+
 KSV's AdobeHDS - https://github.com/K-S-V/Scripts/blob/master/AdobeHDS.php A fully working php code, doing exactly what I want mine to do. Should I just translate this over to C#? Nah. I'm one of those wheel reinventors. I should get that printed on my business card.
