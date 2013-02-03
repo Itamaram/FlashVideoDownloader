@@ -1,2 +1,15 @@
-== This looks promising ==
-But will it blend?
+== What's all this then? ==
+This project is my attempt in creating a library (and consequently a CLI and GUI) for downloading content from the interwebs, normally streamed using Adobe chuncked streaming technologies, as a single video file.
+=== Why? ===
+All my life I've been plagued by bad internet connection (Technically there was a period of my life in which there was no internet at all, but that doesn't count as living does it?). So I grew accustomed to downloading content rather than streaming it. But everything changed when the fragmented streaming attacked.
+While some sites such as youtube employ clever players, which requests segments of the a singular file, Adobe and its army of engineers decided that passing encapsulated files is the way to go. Which means I can't just grab the one file off the server. My life is now tough.
+=== How? ===
+The plan is simple. We merge kill the batman. Once we are done with that, we download a manifest (.f4m) file, which should tell us where the fragments are, we download all of those, and then through some magical binary manipulation, we end up with bits and pieces which we can glue together with some macaroni to get something we'll be proud to put on the fridge, and/or watch in our favourite media player.
+=== Layman's usage instructions ===
+I would very much like for this project to be accessible to the public. Hence why it is in C#. I trust my users to be able to double click an exe and follow the instructions (Well expecting the latter is asking for a bit much, but you know what I mean).
+However, this would require me to write a GUI. So let me finish writing them dlls first, and make sure I can actually do what I claim I can, before wrapping it all up with a bow and a ribbon.
+'''tl;dr:'''This project is not yet ready for human consumption.
+=== References ===
+F4v specifications - http://download.macromedia.com/f4v/video_file_format_spec_v10_1.pdf (Did you know I tried implementing all of it before realizing it is not needed for this project? Some weekends were meant to be wasted)
+F4M specifications - http://sourceforge.net/apps/mediawiki/osmf.adobe/index.php?title=Flash_Media_Manifest_%28F4M%29_File_Format (Schemas are for chumps)
+KSV's AdobeHDS - https://github.com/K-S-V/Scripts/blob/master/AdobeHDS.php A fully working php code, doing exactly what I want mine to do. Should I just translate this over to C#? Nah. I'm one of those wheel reinventors. I should get that printed on my business card.
