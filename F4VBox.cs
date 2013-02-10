@@ -7,7 +7,7 @@ using System.IO;
 
 namespace FlashVideoFiles
 {
-    abstract class F4VBox
+    public abstract class F4VBox
     {
         /// <summary>
         /// A consistent header that all boxes have
@@ -19,9 +19,9 @@ namespace FlashVideoFiles
             BoxHeader = new F4VBoxHeader();
         }
 
-        public virtual void Parse(Stream s)
+        public virtual void Parse(ExtendedBinaryReader br)
         {
-            BoxHeader.Parse(s);
+            BoxHeader.Parse(br);
         }
     }
 }

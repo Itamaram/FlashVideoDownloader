@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlashVideoFiles
 {
-    class UInt24
+    public class UInt24
     {
         public byte Byte1 { get; private set; }
         public byte Byte2 { get; private set; }

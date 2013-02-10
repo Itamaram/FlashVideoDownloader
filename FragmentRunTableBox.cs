@@ -15,7 +15,7 @@ namespace FlashVideoFiles
     ///  - The Fragment Run Table is compactly coded, as each entry gives the first fragment number for a run of fragments with the same duration. The count of fragments having this same duration can be calculated by subtracting the first fragment number in this entry from the first fragment number in the next entry.
     ///  There may be several Fragment Run Table boxes in one Bootstrap Info box, each for different quality levels.
     /// </summary>
-    class FragmentRunTableBox :F4VBox
+    public class FragmentRunTableBox : F4VBox
     {
         /// <summary>
         /// Either 0 or 1
@@ -32,7 +32,7 @@ namespace FlashVideoFiles
         /// <summary>
         /// The number of time units per second, used in the FirstFragmentTimestamp and FragmentDuration fields. Typically, the value is 1.
         /// </summary>
-        public UInt32 TimeScale { get; private set; }
+        public uint TimeScale { get; private set; }
 
         /// <summary>
         /// The number of QualitySegmentUrlModifiers (quality level references) that follow. If 0, this Fragment Run Table applies to all quality levels, and there shall be only one Fragment Run Table box in the Bootstrap Info box
@@ -52,32 +52,30 @@ namespace FlashVideoFiles
         /// <summary>
         /// Array of fragment run entries 
         /// </summary>
-        public FragmentRunEntry[] FragmentRunEntryTable{get;private set;}
+        public FragmentRunEntry[] FragmentRunEntryTable { get; private set; }
 
-        public override void Parse(Stream s)
+        public override void Parse(ExtendedBinaryReader br)
         {
-            base.Parse(s);
+            base.Parse(br);
 
-            using(var br = new BinaryReader(s)){
-                Version = br.ReadByte();
-                Flags = BinaryReaderHelper.ReadUInt24(br);
-                TimeScale = br.ReadUInt32();
-                QualityEntryCount = br.ReadByte();
-                QualitySegmentUrlModifiers = Enumerable.Range(0, QualityEntryCount).Select(i =>BinaryReaderHelper.ReadNullTerminatedString(br)).ToArray();
-                FragmentRunEntryCount = br.ReadUInt32();
-                FragmentRunEntryTable = new FragmentRunEntry[FragmentRunEntryCount];
-                for(uint i = 0 ; i < FragmentRunEntryCount ; i++)
-                    FragmentRunEntryTable[i] = FragmentRunEntry.ParseFromStream(br);
-            }
+            Version = br.ReadByte();
+            Flags = br.ReadUInt24();
+            TimeScale = br.ReadUInt32();
+            QualityEntryCount = br.ReadByte();
+            QualitySegmentUrlModifiers = Enumerable.Range(0, QualityEntryCount).Select(i => br.ReadNullTerminatedString()).ToArray();
+            FragmentRunEntryCount = br.ReadUInt32();
+            FragmentRunEntryTable = new FragmentRunEntry[FragmentRunEntryCount];
+            for (uint i = 0; i < FragmentRunEntryCount; i++)
+                FragmentRunEntryTable[i] = FragmentRunEntry.Parse(br);
         }
     }
 
-    class FragmentRunEntry
+    public class FragmentRunEntry
     {
         /// <summary>
         /// The identifying number of the first fragment in this run of fragments with the same duration. The fragment corresponding to the FirstFragment in the next FragmentRunEntry will terminate this run. 
         /// </summary>
-        uint FirstFragment{get;private set;}
+        public uint FirstFragment{get;private set;}
 
         /// <summary>
         /// The timestamp of the FirstFragment, in TimeScale units. This field ensures that the fragment timestamps can be accurately represented at the beginning. It also ensures that the timestamps are synchronized when drifts occur due to duration accuracy or timestamp discontinuities
@@ -101,7 +99,7 @@ namespace FlashVideoFiles
         /// </summary>
         public byte? DiscontinuityIndicator{get;private set;}
 
-        public static FragmentRunEntry ParseFromStream(BinaryReader br)
+        public static FragmentRunEntry Parse(ExtendedBinaryReader br)
         {
             var entry = new FragmentRunEntry();
                 entry.FirstFragment= br.ReadUInt32();
@@ -113,6 +111,5 @@ namespace FlashVideoFiles
                 entry.DiscontinuityIndicator = null;
             return entry;
         }
-    }
     }
 }

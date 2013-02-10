@@ -27,6 +27,10 @@ namespace FlashVideoFiles
         {
             return Enumerable.Range(0, 4).Select(i => (char)((fcc >> (i * 8)) & 0xff)).Reverse().Aggregate("", (s, c) => s += c);
         }
+        public override string ToString()
+        {
+            return (string)this;
+        }
         public static bool operator ==(FourCC fcc, string s)
         {
             return (string)fcc == s;

@@ -39,8 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BootstrapInfoBox.cs" />
+    <Compile Include="ExtendedBinaryReader.cs" />
+    <Compile Include="F4Manifest.cs" />
     <Compile Include="F4VBoxHeader.cs" />
     <Compile Include="F4VBox.cs" />
+    <Compile Include="FragmentRunTableBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FourCC.cs" />
     <Compile Include="SegmentRunTableBox.cs" />

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.IO;
 
 namespace FlashVideoFiles
 {
     [Serializable]
     [XmlRoot("manifest")]
-    class F4Manifest
+    public class F4Manifest
     {
         [XmlElement("id")]
         public string ID { get; set; }
@@ -21,7 +22,7 @@ namespace FlashVideoFiles
         public string Language { get; set; }
 
         [XmlElement("duration")]
-        public UInt64 Duration { get; set; }
+        public float Duration { get; set; }
 
         [XmlElement("startTime")]
         public DateTime StartTime { get; set; }
@@ -38,19 +39,29 @@ namespace FlashVideoFiles
         [XmlElement("baseURL")]
         public string BaseUrl { get; set; }
 
-        [XmlArray("drmAdditionalHeader")]
+        [XmlElement("drmAdditionalHeader")]
         public List<ManifestDRMAdditionalHeader> DRMAdditionalHeader { get; set; }
 
         [XmlElement("bootstrapInfo")]
         public ManifestBootstrapInfo BootstreapInfo { get; set; }
 
-        [XmlArray("media")]
+        [XmlElement("media")]
         public List<ManifestMedia> Media{get;set;}
- 
+
+        public static F4Manifest FromXmlString(string xmlString)
+        {
+            xmlString = System.Text.RegularExpressions.Regex.Replace(xmlString, "xmlns=\".*?\"", "");
+            var s = new XmlSerializer(typeof(F4Manifest));
+            using (TextReader reader = new StringReader(xmlString))
+            {
+                return (F4Manifest)s.Deserialize(reader);
+            }
+        }
+
     }
 
     [Serializable]
-    class ManifestDRMAdditionalHeader
+    public class ManifestDRMAdditionalHeader
     {
         [XmlAttribute("id")]
         public string ID { get; set; }
@@ -63,7 +74,7 @@ namespace FlashVideoFiles
     }
 
     [Serializable]
-    class ManifestBootstrapInfo
+    public class ManifestBootstrapInfo
     {
         [XmlAttribute("id")]
         public string ID { get; set; }
@@ -79,22 +90,22 @@ namespace FlashVideoFiles
     }
 
     [Serializable]
-    class ManifestMedia
+    public class ManifestMedia
     {
         [XmlAttribute("url")]
         public string Url{get; set;}
 
         [XmlAttribute("bitrate")]
-        public int? BitRate { get; set; }
+        public int BitRate { get; set; }
 
         [XmlAttribute("streamId")]
         public string StreamID { get; set; }
 
         [XmlAttribute("width")]
-        public int? Width { get; set; }
+        public int Width { get; set; }
 
         [XmlAttribute("height")]
-        public int? Height { get; set; }
+        public int Height { get; set; }
 
         [XmlAttribute("bootstrapInfoId")]
         public string BootstrapInfoID { get; set; }
@@ -119,5 +130,8 @@ namespace FlashVideoFiles
 
         [XmlElement("moov")]
         public string Moov { get; set; }
+
+        [XmlElement("metadata")]
+        public string Metadata { get; set; }
     }
 }

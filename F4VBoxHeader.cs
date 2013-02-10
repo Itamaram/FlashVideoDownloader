@@ -10,7 +10,7 @@ namespace FlashVideoFiles
     /// <summary>
     /// A consistent header that all boxes have
     /// </summary>
-    class F4VBoxHeader
+    public class F4VBoxHeader
     {
         /// <summary>
         /// The total size of the box in bytes, including this header. 0 indicates that the box extends until the end of the file.
@@ -19,23 +19,20 @@ namespace FlashVideoFiles
         /// <summary>
         /// The type of the box, usually as 4CC code
         /// </summary>
-        public uint BoxType { get; private set; }
+        public FourCC BoxType { get; private set; }
         /// <summary>
         /// The total 64-bit length of the box in bytes, including this header, only used if TotalSize == 1
         /// </summary>
         public UInt64? ExtendedSize { get; private set; }
 
-        public void Parse(Stream s)
+        public void Parse(ExtendedBinaryReader br)
         {
-            using (var br = new BinaryReader(s))
-            {
-                TotalSize = br.ReadUInt32();
-                BoxType = br.ReadUInt32();
-                if (TotalSize == 1)
-                    ExtendedSize = br.ReadUInt64();
-                else
-                    ExtendedSize = null;
-            }
+            TotalSize = br.ReadUInt32();
+            BoxType = br.ReadUInt32();
+            if (TotalSize == 1)
+                ExtendedSize = br.ReadUInt64();
+            else
+                ExtendedSize = null;
 
         }
     }

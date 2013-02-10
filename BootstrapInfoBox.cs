@@ -11,7 +11,7 @@ namespace FlashVideoFiles
     /// A Bootstrap Info (abst) box contains the information necessary to bootstrap the media-presentation URL requests RFC1630 from the media client to the HTTP server. The media presentation can be either a live or a video-ondemand scenario. This box contains basic information about the server, movie, and segment information. It also contains one or more segment run tables and fragment run tables.
     /// In the HTTP streaming segment, the abst box is optional and precedes the Movie (moov) box. In the HTTP streaming fragment, the abst box is required. For a description of the boxes and structure required for HTTP streaming, see Annex C. HTTP Streaming: File Structure.
     /// </summary>
-    class BootstrapInfoBox : F4VBox
+    public class BootstrapInfoBox : F4VBox
     {
         /// <summary>
         /// Either 0 or 1
@@ -30,9 +30,9 @@ namespace FlashVideoFiles
         public uint BootstrapinfoVersion { get; private set; }
 
         /// <summary>
-        /// Indicates if it is the Named Access (0) or the Range Access (1) Profile. One bit is reserved for future profiles.
+        /// Indicates if it is the Named Access (0) or the Range Access (1) Profile. One bit is reserved for future profiles. Length should be 2.
         /// </summary>
-        public byte Profile { get; private set; }
+        public bool[] Profile { get; private set; }
 
         /// <summary>
         /// Indicates if the media presentation is live (1) or not.
@@ -47,9 +47,9 @@ namespace FlashVideoFiles
         public bool Update { get; private set; }
 
         /// <summary>
-        /// Reserved, set to 0
+        /// Reserved, set to 0. Length should be 4
         /// </summary>
-        public byte Reserved { get; private set; }
+        public bool[] Reserved { get; private set; }
 
         /// <summary>
         /// The number of time units per second. The field CurrentMediaTime uses this value to represent accurate time. Typically, the value is 1000, for a unit of milliseconds.
@@ -122,78 +122,77 @@ namespace FlashVideoFiles
         /// </summary>
         public FragmentRunTableBox[] FragmentRunTableEntries { get; private set; }
 
-        public override void Parse(Stream s)
+        public override void Parse(ExtendedBinaryReader br)
         {
-            base.Parse(s);
-            using (var br = new BinaryReader(s))
+            base.Parse(br);
+
+            Version = br.ReadByte();
+            Flags = br.ReadUInt24();
+            BootstrapinfoVersion = br.ReadUInt32();
+            var b = br.ReadByte();
+            Profile = (new byte[] { 0x80, 0x40 }).Select(i => (i & b) != 0).ToArray();
+            Live = (0x02 & b) != 0;
+            Update = (0x01 & b) != 0;
+            Reserved = (new byte[] { 0x08, 0x04, 0x02, 0x01 }).Select(i => (i & b) != 0).ToArray();
+            TimeScale = br.ReadUInt32();
+            CurrentMediaTime = br.ReadUInt64();
+            SmpteTimeCodeOffset = br.ReadUInt64();
+            MovieIdentifier = br.ReadNullTerminatedString();
+            ServerEntryCount = br.ReadByte();
+            ServerEntryTable = new ServerEntry[ServerEntryCount];
+            for (int i = 0; i < ServerEntryCount; i++)
+                ServerEntryTable[i] = ServerEntry.Parse(br);
+            QualityEntryCount = br.ReadByte();
+            QualityEntryTable = new QualityEntry[QualityEntryCount];
+            for (int i = 0; i < QualityEntryCount; i++)
+                QualityEntryTable[i] = QualityEntry.Parse(br);
+            DrmData = br.ReadNullTerminatedString();
+            MetaData = br.ReadNullTerminatedString();
+            SegmentRunTableCount = br.ReadByte();
+            SegmentRunTableEntries = new SegmentRunTableBox[SegmentRunTableCount];
+            for (int i = 0; i < SegmentRunTableCount; i++)
             {
-                Version = br.ReadByte();
-                Flags = BinaryReaderHelper.ReadUInt24(br);
-                BootstrapinfoVersion = br.ReadUInt32();
-                Profile = (byte)BinaryReaderHelper.ReadNBitsUnsigned(br, 2);
-                Live = br.ReadBoolean();
-                Update = br.ReadBoolean();
-                Reserved = (byte)BinaryReaderHelper.ReadNBitsUnsigned(br, 4);
-                TimeScale = br.ReadUInt32();
-                CurrentMediaTime = br.ReadUInt64();
-                SmpteTimeCodeOffset = br.ReadUInt64();
-                MovieIdentifier = BinaryReaderHelper.ReadNullTerminatedString(br);
-                ServerEntryCount = br.ReadByte();
-                ServerEntryTable = new ServerEntry[ServerEntryCount];
-                for (int i = 0; i < ServerEntryCount; i++)
-                    ServerEntryTable[i] = ServerEntry.ParseFromStream(br);
-                QualityEntryCount = br.ReadByte();
-                QualityEntryTable = new QualityEntry[QualityEntryCount];
-                for (int i = 0; i < QualityEntryCount; i++)
-                    QualityEntryTable[i] = QualityEntry.ParseFromStream(br);
-                DrmData = BinaryReaderHelper.ReadNullTerminatedString(br);
-                MetaData = BinaryReaderHelper.ReadNullTerminatedString(br);
-                SegmentRunTableCount = br.ReadByte();
-                SegmentRunTableEntries = new SegmentRunTableBox[SegmentRunTableCount];
-                for (int i = 0; i < SegmentRunTableCount; i++)
-                {
-                    SegmentRunTableEntries[i] = new SegmentRunTableBox();
-                    SegmentRunTableEntries[i].Parse(s);
-                }
-                FragmentRunTableCount = br.ReadByte();
-                FragmentRunTableEntries = new FragmentRunTableBox[FragmentRunTableCount];
-                for (int i = 0; i < FragmentRunTableCount; i++)
-                {
-                    FragmentRunTableEntries[i] = new FragmentRunTableBox();
-                    FragmentRunTableEntries[i].Parse(s);
-                }
+                SegmentRunTableEntries[i] = new SegmentRunTableBox();
+                SegmentRunTableEntries[i].Parse(br);
+            }
+            FragmentRunTableCount = br.ReadByte();
+            FragmentRunTableEntries = new FragmentRunTableBox[FragmentRunTableCount];
+            for (int i = 0; i < FragmentRunTableCount; i++)
+            {
+                FragmentRunTableEntries[i] = new FragmentRunTableBox();
+                FragmentRunTableEntries[i].Parse(br);
             }
         }
     }
 
-    class ServerEntry
+    public class ServerEntry
     {
         /// <summary>
         /// The server base url for this presentation on that server. The value is a null-terminated UTF-8 string, without a trailing "/".
         /// </summary>
         public string ServerBaseURL { get; private set; }
 
-        public static ServerEntry ParseFromStream(BinaryReader br)
+        public static ServerEntry Parse(ExtendedBinaryReader br)
         {
             return new ServerEntry
             {
-                ServerBaseURL = BinaryReaderHelper.ReadNullTerminatedString(br)
+                ServerBaseURL = br.ReadNullTerminatedString()
             };
         }
     }
 
-    class QualityEntry
+    public class QualityEntry
     {
         /// <summary>
         /// Name of the quality (segment) file that is used to construct the right URL for that quality media. The value is a null-terminated UTF-8 string, optionally with a trailing "/".
         /// </summary>
         public string QualitySegmentUrlModifier { get; private set; }
 
-        public static QualityEntry ParseFromStream(BinaryReader br)
+        public static QualityEntry Parse(ExtendedBinaryReader br)
         {
             return new QualityEntry
             {
-                QualitySegmentUrlModifier = BinaryReaderHelper.ReadNullTerminatedString(br)
+                QualitySegmentUrlModifier = br.ReadNullTerminatedString()
             };
         }
     }

@@ -14,13 +14,13 @@ namespace FlashVideoFiles
     /// - A Segment Run Table may represent fragment runs for several quality levels.
     /// - The Segment Run Table is compactly coded. Each entry gives the first segment number for a run of segments with the same count of fragments. The count of segments having this same count of fragments can be calculated by subtracting the first segment number in this entry from the first segment number in the next entry.
     /// </summary>
-    class SegmentRunTableBox : F4VBox
+    public class SegmentRunTableBox : F4VBox
     {
         /// <summary>
         /// Either 0 or 1
         /// </summary>
         public byte Version { get; private set; }
-        
+
         /// <summary>
         /// The following values are defined:
         /// 0 = A full table. 
@@ -48,26 +48,22 @@ namespace FlashVideoFiles
         /// </summary>
         public SegmentRunEntry[] SegmentRunEntryTable { get; private set; }
 
-        public override void Parse(Stream s)
+        public override void Parse(ExtendedBinaryReader br)
         {
-            base.Parse(s);
+            base.Parse(br);
 
-            using (var br = new BinaryReader(s,System.Text.Encoding.UTF8))
-            {
-                Version = br.ReadByte();
-                Flags = BinaryReaderHelper.ReadUInt24(br);
-                QualityEntryCount = br.ReadByte();
-                QualitySegmentUrlModifiers = Enumerable.Range(0, QualityEntryCount).Select(i =>BinaryReaderHelper.ReadNullTerminatedString(br)).ToArray();
-                SegmentRunEntryCount = br.ReadUInt32();
-                SegmentRunEntryTable = new SegmentRunEntry[SegmentRunEntryCount];
-                for (uint i = 0; i < SegmentRunEntryCount; i++)
-                    SegmentRunEntryTable[i] = SegmentRunEntry.ParseFromStream(br);
-
-            }
+            Version = br.ReadByte();
+            Flags = br.ReadUInt24();
+            QualityEntryCount = br.ReadByte();
+            QualitySegmentUrlModifiers = Enumerable.Range(0, QualityEntryCount).Select(i => br.ReadNullTerminatedString()).ToArray();
+            SegmentRunEntryCount = br.ReadUInt32();
+            SegmentRunEntryTable = new SegmentRunEntry[SegmentRunEntryCount];
+            for (uint i = 0; i < SegmentRunEntryCount; i++)
+                SegmentRunEntryTable[i] = SegmentRunEntry.Parse(br);
         }
     }
 
-    class SegmentRunEntry
+    public class SegmentRunEntry
     {
         /// <summary>
         /// The identifying number of the first segment in the run of segments containing the same number of fragments. The segment corresponding to the FirstSegment in the next SEGMENTRUNENTRY will terminate this run
@@ -79,7 +75,7 @@ namespace FlashVideoFiles
         /// </summary>
         public uint FragmentsPerSegment { get; private set; }
 
-        public static SegmentRunEntry ParseFromStream(BinaryReader br)
+        public static SegmentRunEntry Parse(ExtendedBinaryReader br)
         {
             return new SegmentRunEntry
             {
