@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashVideoFiles", "FlashVideoDownloader\FlashVideoFiles.csproj", "{BB957319-D85D-4032-8DF5-BB1C1B3CAF46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashVideoDownloaderCLI", "FlashVideoDownloaderCLI\FlashVideoDownloaderCLI.csproj", "{9844DF8E-726A-4204-B76D-FF5E98DBA402}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB957319-D85D-4032-8DF5-BB1C1B3CAF46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB957319-D85D-4032-8DF5-BB1C1B3CAF46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB957319-D85D-4032-8DF5-BB1C1B3CAF46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB957319-D85D-4032-8DF5-BB1C1B3CAF46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9844DF8E-726A-4204-B76D-FF5E98DBA402}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9844DF8E-726A-4204-B76D-FF5E98DBA402}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9844DF8E-726A-4204-B76D-FF5E98DBA402}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9844DF8E-726A-4204-B76D-FF5E98DBA402}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
