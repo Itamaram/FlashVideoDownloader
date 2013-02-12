@@ -7,7 +7,7 @@ using System.IO;
 
 namespace FlashVideoFiles
 {
-    public class ExtendedBinaryReader :BinaryReader
+    public class ExtendedBinaryReader : BinaryReader
     {
         public ExtendedBinaryReader(Stream s) : base(s) { }
 
@@ -105,5 +105,28 @@ namespace FlashVideoFiles
             return BitConverterWrapper<ulong>(BitConverter.ToUInt64, ReadBytes(8));
         }
 
+        /// <summary>
+        /// Reads to the end of the stream
+        /// </summary>
+        /// <returns></returns>
+        public byte[] ReadToEnd()
+        {
+            using (var ms = new MemoryStream())
+            {
+                BaseStream.CopyTo(ms);
+                return ms.ToArray();
+            }
+        }
+
+        public IEnumerable<byte[]> ReadChunkedBytes(ulong u)
+        {
+            const int BUFFER_SIZE = 4096;
+            while (u > 0)
+            {
+                var bytesToRead = u < BUFFER_SIZE ? (int)u : BUFFER_SIZE;
+                u -= (ulong)bytesToRead;
+                yield return ReadBytes(bytesToRead);
+            }
+        }
     }
 }

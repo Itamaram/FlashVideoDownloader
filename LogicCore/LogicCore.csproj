@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BB957319-D85D-4032-8DF5-BB1C1B3CAF46}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{148AC1AA-4612-44C6-AA52-67A42614D87E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FlashVideoFiles</RootNamespace>
-    <AssemblyName>FlashVideoFiles</AssemblyName>
+    <RootNamespace>LogicCore</RootNamespace>
+    <AssemblyName>LogicCore</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -39,18 +41,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BootstrapInfoBox.cs" />
-    <Compile Include="ExtendedBinaryReader.cs" />
-    <Compile Include="F4Manifest.cs" />
-    <Compile Include="F4VBoxHeader.cs" />
-    <Compile Include="F4VBox.cs" />
-    <Compile Include="FragmentRunTableBox.cs" />
-    <Compile Include="MediaDataBox.cs" />
+    <Compile Include="Downloader.cs" />
+    <Compile Include="Parser.cs" />
+    <Compile Include="IDownloader.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FourCC.cs" />
-    <Compile Include="SegmentRunTableBox.cs" />
-    <Compile Include="UInt24.cs" />
-    <Compile Include="UnknownBox.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FlashVideoDownloader\FlashVideoFiles.csproj">
+      <Project>{bb957319-d85d-4032-8df5-bb1c1b3caf46}</Project>
+      <Name>FlashVideoFiles</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

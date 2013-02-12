@@ -25,6 +25,14 @@ namespace FlashVideoFiles
         /// </summary>
         public UInt64? ExtendedSize { get; private set; }
 
+        public int HeaderSize
+        {
+            get
+            {
+                return 4 + 4 + (ExtendedSize != null ? 8 : 0);
+            }
+        }
+
         public void Parse(ExtendedBinaryReader br)
         {
             TotalSize = br.ReadUInt32();

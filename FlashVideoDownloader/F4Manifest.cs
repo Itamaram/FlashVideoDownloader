@@ -43,10 +43,10 @@ namespace FlashVideoFiles
         public List<ManifestDRMAdditionalHeader> DRMAdditionalHeader { get; set; }
 
         [XmlElement("bootstrapInfo")]
-        public ManifestBootstrapInfo BootstreapInfo { get; set; }
+        public List<ManifestBootstrapInfo> BootstreapInfo { get; set; }
 
         [XmlElement("media")]
-        public List<ManifestMedia> Media{get;set;}
+        public List<ManifestMedia> Media { get; set; }
 
         public static F4Manifest FromXmlString(string xmlString)
         {
@@ -54,10 +54,12 @@ namespace FlashVideoFiles
             var s = new XmlSerializer(typeof(F4Manifest));
             using (TextReader reader = new StringReader(xmlString))
             {
-                return (F4Manifest)s.Deserialize(reader);
+                var manifest = (F4Manifest)s.Deserialize(reader);
+                foreach (var media in manifest.Media)
+                    media.ManifestBootstrapInfo = manifest.BootstreapInfo.Where(bootstrap => bootstrap.ID == media.BootstrapInfoID).FirstOrDefault();
+                return manifest;
             }
         }
-
     }
 
     [Serializable]
@@ -67,7 +69,7 @@ namespace FlashVideoFiles
         public string ID { get; set; }
 
         [XmlAttribute("url")]
-        public string Url{get;set;}
+        public string Url { get; set; }
 
         [XmlText]
         public string AdditionalHeader { get; set; }
@@ -87,13 +89,25 @@ namespace FlashVideoFiles
 
         [XmlText]
         public string BootstrapInfo { get; set; }
+
+        [XmlIgnore]
+        public BootstrapInfoBox BootstrapInfoBox
+        {
+            get
+            {
+                if (BootstrapInfo == null)
+                    return null;
+                else
+                    return BootstrapInfoBox.FromBase64String(BootstrapInfo);
+            }
+        }
     }
 
     [Serializable]
     public class ManifestMedia
     {
         [XmlAttribute("url")]
-        public string Url{get; set;}
+        public string Url { get; set; }
 
         [XmlAttribute("bitrate")]
         public int BitRate { get; set; }
@@ -133,5 +147,8 @@ namespace FlashVideoFiles
 
         [XmlElement("metadata")]
         public string Metadata { get; set; }
+
+        [XmlIgnore]
+        public ManifestBootstrapInfo ManifestBootstrapInfo { get; set; }
     }
 }

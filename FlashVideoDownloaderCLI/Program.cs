@@ -39,6 +39,16 @@ namespace FlashVideoDownloaderCLI
   </media>
 </manifest>
 ";
+
+            using (var st = new FileStream(@"C:\masterchef\1defa53e70d61a65de882806bd0603cd_3_f3035f4a846d9447_Seg1-Frag1", FileMode.Open))
+            {
+                using (var br = new ExtendedBinaryReader(st))
+                {
+                    var b = new BootstrapInfoBox();
+                    b.Parse(br);
+                }
+            }
+
             var f = F4Manifest.FromXmlString(s);
 
             string boot = "AAAAi2Fic3QAAAAAAAAAAQAAAAPoAAAAAABCG+gAAAAAAAAAAAAAAAAAAQAAABlhc3J0AAAAAAAAAAABAAAAAQAAA2IBAAAARmFmcnQAAAAAAAAD6AAAAAADAAAAAQAAAAAAAAAAAAATiAAAA2IAAAAAAEH+iAAAHWAAAAAAAAAAAAAAAAAAAAAAAA==";

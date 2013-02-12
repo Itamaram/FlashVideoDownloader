@@ -163,6 +163,17 @@ namespace FlashVideoFiles
                 FragmentRunTableEntries[i].Parse(br);
             }
         }
+
+        public static BootstrapInfoBox FromBase64String(string s)
+        {
+            var stream = new MemoryStream(System.Convert.FromBase64String(s));
+            using (var br = new ExtendedBinaryReader(stream))
+            {
+                BootstrapInfoBox bib = new BootstrapInfoBox();
+                bib.Parse(br);
+                return bib;
+            }
+        }
     }
 
     public class ServerEntry
