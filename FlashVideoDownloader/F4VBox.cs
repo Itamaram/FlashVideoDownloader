@@ -25,33 +25,6 @@ namespace FlashVideoFiles
                 BoxHeader.Parse(br);
         }
 
-        public static F4VBox ParseBox(ExtendedBinaryReader br)
-        {
-            var header = new F4VBoxHeader();
-            header.Parse(br);
-            F4VBox box;
-            switch (header.BoxType.ToString())
-            {
-                case "abst":
-                    box = new BootstrapInfoBox();
-                    break;
-                case "asrt":
-                    box = new SegmentRunTableBox();
-                    break;
-                case "afrt":
-                    box = new FragmentRunTableBox();
-                    break;
-                case "mdat":
-                    box = new MediaDataBox();
-                    break;
-                default:
-                    return null;
-            }
-            box.BoxHeader = header;
-            box.Parse(br);
-            return box;
-        }
-
         public override string ToString()
         {
             return BoxHeader.BoxType == null ? "????" : BoxHeader.BoxType.ToString();

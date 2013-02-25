@@ -118,15 +118,19 @@ namespace FlashVideoFiles
             }
         }
 
-        public IEnumerable<byte[]> ReadChunkedBytes(ulong u)
+        public IEnumerable<byte[]> ReadChunkedBytes(ulong u, int buffersize = 4096)
         {
-            const int BUFFER_SIZE = 4096;
             while (u > 0)
             {
-                var bytesToRead = u < BUFFER_SIZE ? (int)u : BUFFER_SIZE;
+                var bytesToRead = u < (ulong)buffersize ? (int)u : buffersize;
                 u -= (ulong)bytesToRead;
                 yield return ReadBytes(bytesToRead);
             }
+        }
+
+        public void SkipBytes(ulong count)
+        {
+            foreach (var b in ReadChunkedBytes(count)) ;
         }
     }
 }

@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BootstrapInfoBox.cs" />
+    <Compile Include="BoxParser.cs" />
     <Compile Include="ExtendedBinaryReader.cs" />
     <Compile Include="F4Manifest.cs" />
     <Compile Include="F4VBoxHeader.cs" />
