@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FlashVideoFiles;
 using System.IO;
+using System.Net;
 
 namespace FlashVideoDownloaderCLI
 {
@@ -12,44 +13,40 @@ namespace FlashVideoDownloaderCLI
     {
         static void Main(string[] args)
         {
-            string s = @"<?xml version=""1.0"" encoding=""UTF-8""?>
-<manifest xmlns=""http://ns.adobe.com/f4m/1.0"" xmlns:akamai=""uri:akamai.com/f4m/1.0"">
-  <akamai:version>2.0</akamai:version>
-  <akamai:bw>2000</akamai:bw>
-  <id>/VOD/KESHET/master_chef/S03/masterchef3_20_VOD/masterchef3_20_VOD_,500,850,1200,2000,.mp4.csmil_0</id>
-  <streamType>recorded</streamType>
-  <akamai:streamType>vod</akamai:streamType>
-  <duration>4332.520</duration>
-  <streamBaseTime>0.000</streamBaseTime>
-  <bootstrapInfo profile=""named"" id=""bootstrap_0"">AAAAi2Fic3QAAAAAAAAAAQAAAAPoAAAAAABCG+gAAAAAAAAAAAAAAAAAAQAAABlhc3J0AAAAAAAAAAABAAAAAQAAA2IBAAAARmFmcnQAAAAAAAAD6AAAAAADAAAAAQAAAAAAAAAAAAATiAAAA2IAAAAAAEH+iAAAHWAAAAAAAAAAAAAAAAAAAAAAAA==</bootstrapInfo>
-  <bootstrapInfo profile=""named"" id=""bootstrap_1"">AAAAi2Fic3QAAAAAAAAAAQAAAAPoAAAAAABCG+gAAAAAAAAAAAAAAAAAAQAAABlhc3J0AAAAAAAAAAABAAAAAQAAA2IBAAAARmFmcnQAAAAAAAAD6AAAAAADAAAAAQAAAAAAAAAAAAATiAAAA2IAAAAAAEH+iAAAHWAAAAAAAAAAAAAAAAAAAAAAAA==</bootstrapInfo>
-  <bootstrapInfo profile=""named"" id=""bootstrap_2"">AAAAi2Fic3QAAAAAAAAAAQAAAAPoAAAAAABCG+gAAAAAAAAAAAAAAAAAAQAAABlhc3J0AAAAAAAAAAABAAAAAQAAA2IBAAAARmFmcnQAAAAAAAAD6AAAAAADAAAAAQAAAAAAAAAAAAATiAAAA2IAAAAAAEH+iAAAHWAAAAAAAAAAAAAAAAAAAAAAAA==</bootstrapInfo>
-  <bootstrapInfo profile=""named"" id=""bootstrap_3"">AAAAi2Fic3QAAAAAAAAAAQAAAAPoAAAAAABCG+gAAAAAAAAAAAAAAAAAAQAAABlhc3J0AAAAAAAAAAABAAAAAQAAA2IBAAAARmFmcnQAAAAAAAAD6AAAAAADAAAAAQAAAAAAAAAAAAATiAAAA2IAAAAAAEH+iAAAHWAAAAAAAAAAAAAAAAAAAAAAAA==</bootstrapInfo>
-  <media bitrate=""541"" url=""0_e033fbf49e447697_"" bootstrapInfoId=""bootstrap_0"">
-    <metadata>AgAKb25NZXRhRGF0YQgAAAAMAAhkdXJhdGlvbgBAsOyFHrhR7AAFd2lkdGgAQH4AAAAAAAAABmhlaWdodABAdoAAAAAAAAANdmlkZW9kYXRhcmF0ZQBAfgxCMhJYAAAJZnJhbWVyYXRlAEA5AAAAAAAAAAx2aWRlb2NvZGVjaWQAQBwAAAAAAAAADWF1ZGlvZGF0YXJhdGUAQE7V2YTgbEMAD2F1ZGlvc2FtcGxlcmF0ZQBA5YiAAAAAAAAPYXVkaW9zYW1wbGVzaXplAEAwAAAAAAAAAAZzdGVyZW8BAQAMYXVkaW9jb2RlY2lkAEAkAAAAAAAAAAhmaWxlc2l6ZQBBsYJ+0wAAAAAACQ==</metadata>
-  </media>
-  <media bitrate=""911"" url=""1_e033fbf49e447697_"" bootstrapInfoId=""bootstrap_1"">
-    <metadata>AgAKb25NZXRhRGF0YQgAAAAMAAhkdXJhdGlvbgBAsOyFHrhR7AAFd2lkdGgAQIQAAAAAAAAABmhlaWdodABAfgAAAAAAAAANdmlkZW9kYXRhcmF0ZQBAipTLqG803AAJZnJhbWVyYXRlAEA5AAAAAAAAAAx2aWRlb2NvZGVjaWQAQBwAAAAAAAAADWF1ZGlvZGF0YXJhdGUAQE7V2YTgbEMAD2F1ZGlvc2FtcGxlcmF0ZQBA5YiAAAAAAAAPYXVkaW9zYW1wbGVzaXplAEAwAAAAAAAAAAZzdGVyZW8BAQAMYXVkaW9jb2RlY2lkAEAkAAAAAAAAAAhmaWxlc2l6ZQBBvXKozAAAAAAACQ==</metadata>
-  </media>
-  <media bitrate=""1347"" url=""2_e033fbf49e447697_"" bootstrapInfoId=""bootstrap_2"">
-    <metadata>AgAKb25NZXRhRGF0YQgAAAAMAAhkdXJhdGlvbgBAsOyFHrhR7AAFd2lkdGgAQIQAAAAAAAAABmhlaWdodABAfgAAAAAAAAANdmlkZW9kYXRhcmF0ZQBAlBospCeuvQAJZnJhbWVyYXRlAEA5AAAAAAAAAAx2aWRlb2NvZGVjaWQAQBwAAAAAAAAADWF1ZGlvZGF0YXJhdGUAQE7V2YTgbEMAD2F1ZGlvc2FtcGxlcmF0ZQBA5YiAAAAAAAAPYXVkaW9zYW1wbGVzaXplAEAwAAAAAAAAAAZzdGVyZW8BAQAMYXVkaW9jb2RlY2lkAEAkAAAAAAAAAAhmaWxlc2l6ZQBBxcKRxYAAAAAACQ==</metadata>
-  </media>
-  <media bitrate=""2200"" url=""3_e033fbf49e447697_"" bootstrapInfoId=""bootstrap_3"">
-    <metadata>AgAKb25NZXRhRGF0YQgAAAAMAAhkdXJhdGlvbgBAsOyFHrhR7AAFd2lkdGgAQIaAAAAAAAAABmhlaWdodABAggAAAAAAAAANdmlkZW9kYXRhcmF0ZQBAoLbSbVRwigAJZnJhbWVyYXRlAEA5AAAAAAAAAAx2aWRlb2NvZGVjaWQAQBwAAAAAAAAADWF1ZGlvZGF0YXJhdGUAQE7V2YTgbEMAD2F1ZGlvc2FtcGxlcmF0ZQBA5YiAAAAAAAAPYXVkaW9zYW1wbGVzaXplAEAwAAAAAAAAAAZzdGVyZW8BAQAMYXVkaW9jb2RlY2lkAEAkAAAAAAAAAAhmaWxlc2l6ZQBB0cM6oYAAAAAACQ==</metadata>
-  </media>
-</manifest>
-";
+            var wc = new WebClient { Proxy = null };
 
-            using (var st = new FileStream(@"C:\masterchef\1defa53e70d61a65de882806bd0603cd_3_f3035f4a846d9447_Seg1-Frag1", FileMode.Open))
+            var f = F4Manifest.FromXmlString(wc.DownloadString("http://voda.gua.unlv.edu/scramble203.f4m"));
+            f = F4Manifest.FromXmlString(wc.DownloadString(f.Media.First().Href));
+            var x = f.Media.First().ManifestBootstrapInfo.BootstrapInfoBox.SegmentRunTableEntries.First().SegmentRunEntryTable.First().FragmentsPerSegment;
+
+            var format = "http://{0}{1}{2}Seg{3}-Frag{4}";
+            var flv = new FLVFile
             {
-                using (var br = new ExtendedBinaryReader(st))
-                {
-                    var b = new BootstrapInfoBox();
-                    b.Parse(br);
-                }
-            }
+                TypeFlagsAudio = true,
+                TypeFlagVideo = true
+            };
 
-            var f = F4Manifest.FromXmlString(s);
+            var bw = new BinaryWriter(new FileStream("C:\\temp.flv", FileMode.Create));
+            flv.WriteToFile(bw);
+            bw.Write((int)0);
+            bw.Flush();
+            for (int i = 1; i <= x; i++)
+            {
+                Console.WriteLine("Downloading box: {0} of {1}", i, x);
+                string fileName = "C:\\FlvTemp\\part" + i + ".frag";
+                //wc.DownloadFile(String.Format(format, "voda.gua.unlv.edu/hds-vod/", "scramble203.mp4", "", 1, i), fileName);
+                var br = new ExtendedBinaryReader(new FileStream(fileName, FileMode.Open));
+                var p = new BoxParser(br);
+                F4VBox b;
+                for (b = p.ReadBox(); b.BoxHeader.BoxType != "mdat"; b = p.ReadBox()) ;
+                var br2 = new ExtendedBinaryReader(new MemoryStream((b as MediaDataBox).Payload));
+                var t = FLVTag.Parse(br2);
+                br2.Close();
+                br2 = new ExtendedBinaryReader(new MemoryStream((b as MediaDataBox).Payload));
+                bw.Write(br2.ReadBytes(11 + (int)t.DataSize + 4));
+            }
+            bw.Flush();
+            bw.Close();
 
             string boot = "AAAAi2Fic3QAAAAAAAAAAQAAAAPoAAAAAABCG+gAAAAAAAAAAAAAAAAAAQAAABlhc3J0AAAAAAAAAAABAAAAAQAAA2IBAAAARmFmcnQAAAAAAAAD6AAAAAADAAAAAQAAAAAAAAAAAAATiAAAA2IAAAAAAEH+iAAAHWAAAAAAAAAAAAAAAAAAAAAAAA==";
             var stream = new MemoryStream(System.Convert.FromBase64String(boot));

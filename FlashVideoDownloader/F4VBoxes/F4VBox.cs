@@ -16,13 +16,15 @@ namespace FlashVideoFiles
 
         public F4VBox()
         {
-            BoxHeader = new F4VBoxHeader();
         }
 
         public virtual void Parse(ExtendedBinaryReader br)
         {
-            if(BoxHeader == null)
+            if (BoxHeader == null)
+            {
+                BoxHeader = new F4VBoxHeader();
                 BoxHeader.Parse(br);
+            }
         }
 
         public override string ToString()

@@ -50,10 +50,14 @@ namespace FlashVideoFiles
                     box = new MediaDataBox();
                     break;
                 default:
-                    return null;
+                    box = new UnknownBox();
+                    break;
             }
             box.BoxHeader = currentHeader;
             box.Parse(br);
+
+            currentHeader = null;
+
             return box;
         }
 

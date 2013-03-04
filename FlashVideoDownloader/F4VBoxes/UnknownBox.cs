@@ -20,7 +20,7 @@ namespace FlashVideoFiles
             }
             else
             {
-                br.ReadChunkedBytes((ulong)BoxHeader.TotalSize - (ulong)BoxHeader.HeaderSize).Select(s => s);
+                foreach (var s in br.ReadChunkedBytes((ulong)BoxHeader.TotalSize - (ulong)BoxHeader.HeaderSize)) ;
             }
         }
     }

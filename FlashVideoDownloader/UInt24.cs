@@ -17,9 +17,14 @@ namespace FlashVideoFiles
             Byte2 = b2;
             Byte3 = b3;
         }
+
+        public static explicit operator int(UInt24 ui24)
+        {
+            return (ui24.Byte1 + (ui24.Byte2 << 8) + (ui24.Byte3 << 16));
+        }
         public static bool operator ==(UInt24 ui24, int i)
         {
-            return (ui24.Byte1 + ui24.Byte2 <<8 + ui24.Byte3 << 16) ==   i;
+            return (int)ui24 == i;
         }
         public static bool operator ==(int i, UInt24 ui24)
         {

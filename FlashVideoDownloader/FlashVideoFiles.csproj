@@ -39,19 +39,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BootstrapInfoBox.cs" />
-    <Compile Include="BoxParser.cs" />
+    <Compile Include="F4VBoxes\BootstrapInfoBox.cs" />
+    <Compile Include="F4VBoxes\BoxParser.cs" />
     <Compile Include="ExtendedBinaryReader.cs" />
-    <Compile Include="F4Manifest.cs" />
-    <Compile Include="F4VBoxHeader.cs" />
-    <Compile Include="F4VBox.cs" />
-    <Compile Include="FragmentRunTableBox.cs" />
-    <Compile Include="MediaDataBox.cs" />
+    <Compile Include="F4VBoxes\F4Manifest.cs" />
+    <Compile Include="F4VBoxes\F4VBoxHeader.cs" />
+    <Compile Include="F4VBoxes\F4VBox.cs" />
+    <Compile Include="F4VBoxes\FragmentRunTableBox.cs" />
+    <Compile Include="F4VBoxes\MediaDataBox.cs" />
+    <Compile Include="FLV\FLVFile.cs" />
+    <Compile Include="FLV\FLVTag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FourCC.cs" />
-    <Compile Include="SegmentRunTableBox.cs" />
+    <Compile Include="F4VBoxes\FourCC.cs" />
+    <Compile Include="F4VBoxes\SegmentRunTableBox.cs" />
     <Compile Include="UInt24.cs" />
-    <Compile Include="UnknownBox.cs" />
+    <Compile Include="F4VBoxes\UnknownBox.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -15,9 +15,14 @@ namespace LogicCore
             WebClient = new WebClient();
         }
 
-        public string Get(string url)
+        public string GetString(string url)
         {
             return WebClient.DownloadString(url);
+        }
+
+        public byte[] GetByteArray(string url)
+        {
+            return WebClient.DownloadData(url);
         }
 
         public void Get(string url, string fileName)
